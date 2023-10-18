@@ -13,32 +13,37 @@ computerArray.append(random.randint(1,9))
 for i in range(3):
     computerArray.append(random.randint(0,9))
 
-# Массив из уникальных чисел
+# 0 - массив из уникальных чисел
+# 1 - массив с повторяющимся числом
+
 while(1):
-    isUnique = False
+    isnotUnique = False
     for i in range(4):
         for j in range(i+1,4):
             if computerArray[i]==computerArray[j]:
-                isUnique = True
+                isnotUnique = True
                 break
-        if(isUnique==True):
+        if(isnotUnique==True):
             break
-    if(isUnique==True):
+    if(isnotUnique==True):
         computerArray = []
         computerArray.append(random.randint(1,9))
         for i in range(3):
             computerArray.append(random.randint(0,9))
-        isUnique = True
-    elif isUnique == False:
+        isnotUnique = True
+    elif isnotUnique == False:
         break
-               
-print(computerArray)
+
+       
+
 while(bulls!=4):
     cows = 0
     bulls = 0
-    userNumber = int(input("Введите четырех-значное число: "))
+    userNumber = 0
+    while(userNumber <=1000 or userNumber>=9999):
+        userNumber = int(input("Введите четырех-значное число: "))
     userArray = []
-    
+
     for i in range(4):
         userArray.append(userNumber%10)
         userNumber//=10
@@ -46,17 +51,16 @@ while(bulls!=4):
         temp = userArray[i]
         userArray[i] =  userArray[4-i-1]
         userArray[4-i-1] = temp
-
-    for i in computerArray:
-        if(i in userArray):
-            for j in range(4):
-                if (userArray[j]==computerArray[j]):
+    for i in range(4):
+        for j in range(4):
+            if computerArray[i] == userArray[j]:
+                if i == j:
                     bulls+=1
-                    break
                 else:
                     cows+=1
-                    break
-    print(computerArray)
-    print(userArray)        
+
+    print(userArray)
+    attemps+=1        
     print("быков: ",bulls)
     print("коров: ",cows)
+print("Кол-во попыток: ",attemps)
