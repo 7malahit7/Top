@@ -7,7 +7,7 @@ def printField(field):
     print()
 
 def inputSpot(field,korz):
-
+    printField(field)
     if(korz=='x'):
         korz = 'x'
     else:
@@ -25,7 +25,6 @@ def inputSpot(field,korz):
         else:
             field[spotR-1][spotS-1] = korz
             break
-    printField(field)
 
 
 def newField():
@@ -45,8 +44,7 @@ def randomPC(field,korz):
         else:
             field[spotR-1][spotS-1] = korz
             break
-    printField(field)
-        
+       
 def checkWinner(field):
     if field[0][0] == 'x' and  field[0][1] == 'x' and field[0][2] == 'x':
         print("Выйграли крестики!")
@@ -101,39 +99,39 @@ def checkWinner(field):
     elif field[0][2] == '0' and  field[1][1] == '0' and field[2][0] == '0':    
         print("Выйграли нолики!")
         return True
-kORz = 0
-while(kORz!='0' and kORz!='x'):
-    kORz = str(input("Выберите сторону [x / 0]: "))
 
-field = newField()
-attemps = 0
 while(1):
-    if(checkWinner(field)):
+    kORz = 0
+    while(kORz!='0' and kORz!='x'):
+        kORz = str(input("Выберите сторону [x / 0]: "))
+    field = newField()
+    attemps = 0
+    while(1):
+        if(checkWinner(field)):
+            break
+        if(kORz=='x'):
+            if(attemps!=9):
+                inputSpot(field,kORz)
+            else:   
+                break
+            attemps+=1
+            if(attemps!=9):
+                randomPC(field,kORz)
+            else:
+                break
+            attemps+=1
+        else:
+            attemps+=1
+            if(attemps!=9):
+                randomPC(field,kORz)
+            else:
+                break
+            if(attemps!=9):
+
+                inputSpot(field,kORz)
+            else:
+                break
+            attemps+=1
+    cont = str(input("Продолжить?[y/n]"))
+    if(cont=='n'):
         break
-    if(kORz=='x'):
-        if(attemps!=9):
-            inputSpot(field,kORz)
-        else:
-            break
-        attemps+=1
-        if(attemps!=9):
-            randomPC(field,kORz)
-        else:
-            break
-        attemps+=1
-    else:
-        attemps+=1
-        if(attemps!=9):
-            randomPC(field,kORz)
-        else:
-            break
-        if(attemps!=9):
-
-            inputSpot(field,kORz)
-        else:
-            break
-        attemps+=1
-        
-
-    
-    
