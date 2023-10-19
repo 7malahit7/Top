@@ -8,10 +8,10 @@ def printField(field):
 
 def inputSpot(field,korz):
 
-    if(korz==0):
-        korz = '0'
-    else:
+    if(korz=='x'):
         korz = 'x'
+    else:
+        korz = '0'
 
     while(1):
         spotS = 0
@@ -33,7 +33,7 @@ def newField():
     return field
 
 def randomPC(field,korz):
-    if(korz==0):
+    if(korz=='0'):
         korz = 'x'
     else:
         korz = '0'
@@ -101,15 +101,16 @@ def checkWinner(field):
     elif field[0][2] == '0' and  field[1][1] == '0' and field[2][0] == '0':    
         print("Выйграли нолики!")
         return True
-
-kORz = int(input("[x - 1] [0 - 0]\nВыберите сторону: "))
+kORz = 0
+while(kORz!='0' and kORz!='x'):
+    kORz = str(input("Выберите сторону [x / 0]: "))
 
 field = newField()
 attemps = 0
 while(1):
     if(checkWinner(field)):
         break
-    if(kORz==1):
+    if(kORz=='x'):
         if(attemps!=9):
             inputSpot(field,kORz)
         else:
@@ -121,14 +122,13 @@ while(1):
             break
         attemps+=1
     else:
-
         attemps+=1
         if(attemps!=9):
             randomPC(field,kORz)
         else:
             break
         if(attemps!=9):
-            
+
             inputSpot(field,kORz)
         else:
             break
