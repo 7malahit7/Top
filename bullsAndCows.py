@@ -1,13 +1,10 @@
 #bulls and cows
-
 import random
-
 
 attemps = 0
 bulls = 0
 cows = 0
 computerArray = []
-
 
 computerArray.append(random.randint(1,9))
 for i in range(3):
@@ -15,9 +12,9 @@ for i in range(3):
 
 # 0 - массив из уникальных чисел
 # 1 - массив с повторяющимся числом
-
 while(1):
     isnotUnique = False
+    #проверка на уникальность чисел в массиве
     for i in range(4):
         for j in range(i+1,4):
             if computerArray[i]==computerArray[j]:
@@ -32,14 +29,12 @@ while(1):
             computerArray.append(random.randint(0,9))
         isnotUnique = True
     elif isnotUnique == False:
-        break
-
-       
-
+        break      
 while(bulls!=4):
     cows = 0
     bulls = 0
     userNumber = 0
+    #проверка на 4х значное число
     while(userNumber <=1000 or userNumber>=9999):
         userNumber = int(input("Введите четырех-значное число: "))
     userArray = []
@@ -51,6 +46,7 @@ while(bulls!=4):
         temp = userArray[i]
         userArray[i] =  userArray[4-i-1]
         userArray[4-i-1] = temp
+    #проверка на коров и быков    
     for i in range(4):
         for j in range(4):
             if computerArray[i] == userArray[j]:
@@ -58,9 +54,8 @@ while(bulls!=4):
                     bulls+=1
                 else:
                     cows+=1
-
-    print(userArray)
-    attemps+=1        
+    attemps+=1 
+    print(userArray)       
     print("быков: ",bulls)
     print("коров: ",cows)
 print("Кол-во попыток: ",attemps)
