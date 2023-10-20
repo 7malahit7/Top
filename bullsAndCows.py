@@ -35,7 +35,7 @@ while(bulls!=4):
     bulls = 0
     userNumber = 0
     #проверка на 4х значное число
-    while(userNumber <=1000 or userNumber>=9999):
+    while(userNumber <1000 or userNumber>9999):
         userNumber = int(input("Введите четырех-значное число: "))
     userArray = []
 
