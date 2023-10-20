@@ -5,14 +5,12 @@ def printField(field):
             print(field[i][j],end=" ")
         print()
     print()
-
 def inputSpot(field,korz):
     printField(field)
     if(korz=='x'):
         korz = 'x'
     else:
         korz = '0'
-
     while(1):
         spotS = 0
         spotR = 0
@@ -20,17 +18,14 @@ def inputSpot(field,korz):
             spotR = int(input("Введите номер ряда клетки:"))
         while(spotS<1 or spotS>3):
             spotS = int(input("Введите номер столбца клетки:"))
-        if(field[spotR-1][spotS-1] == 'x' or field[spotR-1][spotS-1] == '0'):
+        if(field[spotR-1][spotS-1] != '#'):
             continue
         else:
             field[spotR-1][spotS-1] = korz
             break
-
-
 def newField():
     field = [['#', '#', '#'], ['#','#','#'], ['#', '#', '#']] 
     return field
-
 def randomPC(field,korz):
     if(korz=='0'):
         korz = 'x'
@@ -39,12 +34,11 @@ def randomPC(field,korz):
     while(1):
         spotS = random.randint(1,3)
         spotR = random.randint(1,3)
-        if(field[spotR-1][spotS-1] == 'x' or field[spotR-1][spotS-1] == '0'):
+        if(field[spotR-1][spotS-1] != '#'):
             continue
         else:
             field[spotR-1][spotS-1] = korz
-            break
-       
+            break     
 def checkWinner(field):
     if field[0][0] == 'x' and  field[0][1] == 'x' and field[0][2] == 'x':
         print("Выйграли крестики!")
@@ -58,7 +52,6 @@ def checkWinner(field):
         print("Выйграли крестики!")
         printField(field)
         return True
-
     elif field[0][0] == 'x' and  field[1][0] == 'x' and field[2][0] == 'x':    
         print("Выйграли крестики!")
         printField(field) 
@@ -70,8 +63,7 @@ def checkWinner(field):
     elif field[0][2] == 'x' and  field[1][2] == 'x' and field[2][2] == 'x':    
         print("Выйграли крестики!")
         printField(field)
-        return True
-    
+        return True  
     elif field[0][0] == 'x' and  field[1][1] == 'x' and field[2][2] == 'x':    
         print("Выйграли крестики!")
         printField(field)
@@ -79,8 +71,7 @@ def checkWinner(field):
     elif field[0][2] == 'x' and  field[1][1] == 'x' and field[2][0] == 'x':    
         print("Выйграли крестики!")
         printField(field)
-        return True
-    
+        return True    
     if field[0][0] == '0' and  field[0][1] == '0' and field[0][2] == '0':
         print("Выйграли нолики!")
         printField(field)
@@ -93,7 +84,6 @@ def checkWinner(field):
         print("Выйграли нолики!")
         printField(field)
         return True
-
     elif field[0][0] == '0' and  field[1][0] == '0' and field[2][0] == '0':    
         print("Выйграли нолики!")
         printField(field)
@@ -105,8 +95,7 @@ def checkWinner(field):
     elif field[0][2] == '0' and  field[1][2] == '0' and field[2][2] == '0':    
         print("Выйграли нолики!")
         printField(field)
-        return True
-    
+        return True  
     elif field[0][0] == '0' and  field[1][1] == '0' and field[2][2] == '0':    
         print("Выйграли нолики!")
         printField(field)
@@ -115,7 +104,7 @@ def checkWinner(field):
         print("Выйграли нолики!")
         printField(field)
         return True
-
+    
 while(1):
     kORz = 0
     while(kORz!='0' and kORz!='x'):
@@ -143,11 +132,12 @@ while(1):
             else:
                 break
             if(attemps!=9):
-
                 inputSpot(field,kORz)
             else:
                 break
             attemps+=1
-    cont = str(input("Продолжить?[y/n]"))
+    cont = 0
+    while(cont != 'y' and cont != 'n'):
+        cont = str(input("Продолжить?[y/n]"))
     if(cont=='n'):
         break
