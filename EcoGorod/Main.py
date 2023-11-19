@@ -4,9 +4,6 @@ from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.screenmanager import ScreenManager, Screen
 from kivy.lang import Builder
 
-
-
-
 class Menu(Screen):
     pass
 
@@ -16,9 +13,6 @@ class Volonter1(Screen):
 class WindowManager(ScreenManager):
     pass
 
-# class MyMenu(BoxLayout):
-#     Window.clearcolor = ('white') 
-    
 
 class ecogorodApp(App):
     Window.clearcolor = ('white') 
