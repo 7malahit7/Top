@@ -4,17 +4,14 @@ WindowManager:
 
 <Menu>:
     name: "menu"
-    canvas.before:
-        Image:'C:\\Users\\ilya\\Downloads\\logo_bez_fona_fona.png'
-
     BoxLayout:
         orientation: 'vertical'
         AnchorLayout:
             Image:
                 anchor_x: 'center' 
                 anchor_y: 'top'
-                source: 'C:\\Users\\ilya\\Downloads\\logo_bez_fona_fona.png'
-                size_hint: .4,.4        
+                source: 'images\\Logo.png'
+                size_hint: .5,.5        
         BoxLayout:
             orientation: 'vertical'
             spacing: 40
@@ -22,16 +19,16 @@ WindowManager:
             
             
             Button:     
-                background_normal: 'C:\\Users\\ilya\\Desktop\\project\\buttonImage2.png'
-                background_down: 'C:\\Users\\ilya\\Desktop\\project\\ButtonDown.png'
-                size_hint: .9,.9
+                background_normal: 'images\\UserButton.png'
+                background_down: 'images\\UserButtonDown.png'
+                size_hint: 1,1
                 on_release: 
                     app.root.current = "v1"
                     root.manager.transition.direction = "left"
             Button:   
-                background_normal: 'C:\\Users\\ilya\\Desktop\\project\\buttonImage2.png'     
-                background_down: 'C:\\Users\\ilya\\Desktop\\project\\ButtonDown.png'   
-                size_hint: .9,.9
+                background_normal: 'images\\VolonterButton.png'     
+                background_down: 'images\\VolonterButtonDown.png'   
+                size_hint: 1,1
                 on_release: 
                     app.root.current = "v1"
                     root.manager.transition.direction = "left"
