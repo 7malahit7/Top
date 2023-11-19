@@ -1,0 +1,49 @@
+WindowManager:
+    Menu:
+    Volonter1:
+
+<Menu>:
+    name: "menu"
+    canvas.before:
+        Image:'C:\\Users\\ilya\\Downloads\\logo_bez_fona_fona.png'
+
+    BoxLayout:
+        orientation: 'vertical'
+        AnchorLayout:
+            Image:
+                anchor_x: 'center' 
+                anchor_y: 'top'
+                source: 'C:\\Users\\ilya\\Downloads\\logo_bez_fona_fona.png'
+                size_hint: .4,.4        
+        BoxLayout:
+            orientation: 'vertical'
+            spacing: 40
+            padding: 100,50
+            
+            
+            Button:     
+                background_normal: 'C:\\Users\\ilya\\Desktop\\project\\buttonImage2.png'
+                background_down: 'C:\\Users\\ilya\\Desktop\\project\\ButtonDown.png'
+                size_hint: .9,.9
+                on_release: 
+                    app.root.current = "v1"
+                    root.manager.transition.direction = "left"
+            Button:   
+                background_normal: 'C:\\Users\\ilya\\Desktop\\project\\buttonImage2.png'     
+                background_down: 'C:\\Users\\ilya\\Desktop\\project\\ButtonDown.png'   
+                size_hint: .9,.9
+                on_release: 
+                    app.root.current = "v1"
+                    root.manager.transition.direction = "left"
+
+
+<Volonter1>:
+    name: "v1"
+
+    BoxLayout:
+        Button:
+            text: "Back"
+            font_size: 30
+            on_release: 
+                app.root.current = "menu"
+                root.manager.transition.direction = "right"
