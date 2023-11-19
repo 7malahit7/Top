@@ -12,13 +12,14 @@ class Menu(Screen):
 
 class Volonter1(Screen):
     pass
-s
+
 class WindowManager(ScreenManager):
     pass
 
 # class MyMenu(BoxLayout):
 #     Window.clearcolor = ('white') 
     
+
 class ecogorodApp(App):
     Window.clearcolor = ('white') 
     Window.baackground = ""
