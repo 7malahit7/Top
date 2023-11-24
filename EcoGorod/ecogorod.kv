@@ -2,14 +2,15 @@ WindowManager:
     Menu:
     VolonterScreen1:
     UserScreen1:
+    UserScreen2:
 
 <Menu>:
     name: "menu"
-    BoxLayout:
-        Image:
-            source:'images\\MenuBackground.png'
+    Image:
+        source:'images\\MenuBackground.png'
     BoxLayout:
         orientation: 'vertical'
+        
         AnchorLayout:
             Image:
                 anchor_x: 'center' 
@@ -18,23 +19,29 @@ WindowManager:
                 size: 562,586
                 size_hint: .7,.7
      
-        FloatLayout:
-            size:200,200
+        AnchorLayout:
+            padding: (0,200,0,0)           
             Button:     
                 background_normal: 'images\\VolonterButton.png'
                 background_down: 'images\\VolonterButtonDown.png'
                 size: 576,178
-                size_hint: .2,.3
-                pos: 1920 - 1920/2-576/3,150
+                size_hint: .2,None
+                anchor_x: 'center'
+                anchor_y: 'bottom'
+                
+
                 on_release: 
                     app.root.current = "volonterScreen1"
                     root.manager.transition.direction = "left"
+        AnchorLayout:
+            padding: (0,0,0,100)  
             Button:   
                 background_normal: 'images\\UserButton.png'     
                 background_down: 'images\\UserButtonDown.png'
                 size: 576,178
-                pos: 1920 - 1920/2-576/3, 298
-                size_hint: .2,.3
+                anchor_x:'center'
+                anchor_y:'top'
+                size_hint: .2,None
                  
                 on_release: 
                     app.root.current = "userScreen1"
@@ -45,25 +52,86 @@ WindowManager:
     name: "volonterScreen1"
 
     BoxLayout:
-        Button:
-            text: "Back"
-            font_size: 30
-            on_release: 
-                app.root.current = "menu"
-                root.manager.transition.direction = "right"
+        orientation:'vertical'
+        AnchorLayout:       
+            Image:
+                source:'images\\VolonterScreen.png'
+                size_hint: None,None
+                size: 700,450
+
+        AnchorLayout:
+            Image:
+                source: 'images\\AdressFalse.png'
+                size_hint: None,None
+                size: 610,240
+                anchor_x: 'center'
+                anchor_y: 'top'
+        AnchorLayout:
+            Image:
+                source: 'images\\AdressFalse.png'
+                size_hint: None,None
+                size: 610,240
+                anchor_x: 'center'
+                anchor_y: 'center'
+        AnchorLayout:
+            Image:
+                source: 'images\\AdressTrue.png'
+                size_hint: None,None
+                size: 610,240
+                anchor_x: 'center'
+                anchor_y: 'bottom'
+    
+    
 
 
 <UserScreen1>:
     name: 'userScreen1'
+    Image:
+        source: 'images\\userScreen1.png'
     BoxLayout:
-        Image:
-            source: 'images\\userScreen1.png'
-        FloatLayout:
-        
+        orientation:'vertical'
+        AnchorLayout:
+            padding:(200,400,0,0)
             Button:
                 background_normal: 'images\\userButton1_1.png'
                 background_down: 'images\\userButton1_1.png'
-                pos: 350,220
-                size: 576,178
-                size_hint: .2,.3
-                
+                on_release: 
+                    app.root.current = "userScreen2"
+                    root.manager.transition.direction = "left"
+                anchor_x:'center'
+                anchor_y:'right'
+                size: 635,155
+                size_hint: None,None
+
+<UserScreen2>:
+    name: 'userScreen2'
+    Image:
+        source: 'images\\userScreen2.png'
+    BoxLayout:
+        orientation:'vertical'
+        AnchorLayout:
+            Image:
+                anchor_x: 'center'
+                anchor_y: 'top'
+                source:'images\\ClearEarth.png'
+                size_hint:None,None
+                size: 500,400
+        BoxLayout:
+            orientation: 'vertical'
+            AnchorLayout:
+                Camera:
+                    id:camera
+                    resolution: -1,-1
+                    play: False
+                    anchor_x: 'center'
+                    anchor_y: 'top'
+            AnchorLayout:    
+                Button:
+                    background_normal:'images\\CameraIcon.png'
+                    background_down: 'images\\CameraIcon.png'
+                    size_hint:None,None
+                    size:210,217
+                    anchor_x: 'center'
+                    anchor_y: 'bottom'
+                    on_press: camera.play = True
+            
