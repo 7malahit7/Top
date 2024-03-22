@@ -1,5 +1,5 @@
 from globals import *
-
+import random
 def draw_border():
     pygame.draw.line(screen,BLACK,[GAP,GAP],[cell_size*board_size+GAP,GAP],2)
     pygame.draw.line(screen,BLACK,[GAP*board_size+GAP-1,GAP],[GAP*board_size+GAP-1,GAP*board_size+GAP],2)
@@ -88,9 +88,9 @@ def draw_bin_tree(arg):
     global arr
     if arg == "SW":
         arr = bin_tree_SW(arr)
-    elif arg == "NW":
-        arr = bin_tree_NW(arr)
     elif arg == "NE":
+        arr = bin_tree_NE(arr)
+    elif arg == "NW":
         arr = bin_tree_NW(arr)
     elif arg == "SE":
         arr = bin_tree_SE(arr)
