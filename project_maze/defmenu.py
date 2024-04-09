@@ -2,32 +2,36 @@ from globals import *
 from bin_tree import *
 font = pygame.font.SysFont('Arial',35)
 font2 = pygame.font.SysFont("timesnewroman",60)
-text_x = width/2-100
+text_x = 16*50/2-100
 color1 = (72, 168, 181)
 color2 = (72, 120, 181)
 def BT(arg):
+    
     is_working = True
-    screen = pygame.display.set_mode((width,height))
+    screen = pygame.display.set_mode((width, height))
     screen.fill(WHITE)
+    pygame.draw.rect(screen, (255, 0, 0), (board_size * cell_size + GAP, 0, 50, 51))
+    pygame.draw.line(screen, (WHITE), [board_size * cell_size + GAP + 5, 5], [board_size * cell_size + GAP + 45, 45], 3)
+    pygame.draw.line(screen, (WHITE), [board_size * cell_size + GAP + 5, 45], [board_size * cell_size + GAP + 45, 5], 3)
+    pygame.draw.rect(screen, (35, 140, 72), (board_size * cell_size, 0, 50, 50))
+    i = font2.render("i", True, WHITE)
+    screen.blit(i, (board_size * cell_size + 18, -8))
     draw_filled_board()
     draw_bin_tree(arg)
-    draw_border()  
-    pygame.draw.rect(screen,(255,0,0),(board_size*cell_size+GAP,0,50,51))
-    pygame.draw.line(screen,(WHITE),[board_size*cell_size+GAP+5,5],[board_size*cell_size+GAP+45,45],3)
-    pygame.draw.line(screen,(WHITE),[board_size*cell_size+GAP+5,45],[board_size*cell_size+GAP+45,5],3)
-    pygame.draw.rect(screen,(35, 140, 72),(board_size*cell_size,0,50,50))
-    i = font2.render("i",True,WHITE)
-    screen.blit(i,(board_size*cell_size+18,-8))
+
     pygame.display.flip()
-    while(is_working):
+
+    while is_working:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 is_working = False
+                return Menu()  # Возвращаемся в меню при закрытии окна
             if event.type == pygame.MOUSEBUTTONDOWN:
                 mouse = pygame.mouse.get_pos()
-                if mouse[0] >= board_size*cell_size+GAP and mouse[0] <= board_size*cell_size+GAP+GAP and mouse[1]>= 0 and mouse[1]<=50:
+                if mouse[0] >= board_size * cell_size + GAP and mouse[0] <= board_size * cell_size + GAP + GAP and \
+                        mouse[1] >= 0 and mouse[1] <= 50:
                     is_working = False
-                    Menu()
+                    return Menu()
                     
 def dirChose():
     b_x = text_x-text_x//4
@@ -46,13 +50,13 @@ def dirChose():
     b4_color = color1
     b4_y = 600
 
-    sw = font.render("Soutwest",True,BLACK)
+    sw = font.render("Southwest",True,BLACK)
     se = font.render("Southeast",True,BLACK)
     nw = font.render("Northwest",True,BLACK)
     ne = font.render("Northeast",True,BLACK)
     info = font.render("Выберите тип лабиринта Двоичное дерево",True,BLACK)
     is_working = True
-    screen = pygame.display.set_mode((width,height))
+    screen = pygame.display.set_mode((800,800))
     screen.fill(WHITE)
 
     pygame.display.flip()
@@ -69,7 +73,7 @@ def dirChose():
         pygame.draw.rect(screen,b4_color,(b_x,b4_y,b_w,b_h),border_radius=5)
         screen.blit(ne,(text_x,620))
 
-        screen.blit(info,(100,100))
+        screen.blit(info,(65,100))
         for event in pygame.event.get():
             mouse = pygame.mouse.get_pos()
             if event.type == pygame.QUIT:
@@ -112,7 +116,7 @@ def Menu():
     Button1_Size_H = 100
     button_color = color1
     is_working = True
-    screen = pygame.display.set_mode((800,1000))
+    screen = pygame.display.set_mode((800,800))
     screen.fill(WHITE)
     while(is_working):
         for event in pygame.event.get():
