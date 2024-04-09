@@ -1,18 +1,19 @@
 from globals import *
 import random
+sc = pygame.display.set_mode((width,height))
 def draw_border():
-    pygame.draw.line(screen,BLACK,[GAP,GAP],[cell_size*board_size+GAP,GAP],2)
-    pygame.draw.line(screen,BLACK,[GAP*board_size+GAP-1,GAP],[GAP*board_size+GAP-1,GAP*board_size+GAP],2)
-    pygame.draw.line(screen,BLACK,[GAP*board_size+GAP-1,GAP*board_size+GAP],[GAP,GAP+board_size*cell_size],2)
-    pygame.draw.line(screen,BLACK,[GAP,GAP+board_size*cell_size],[GAP,GAP],2)
+    pygame.draw.line(sc,BLACK,[GAP,GAP],[cell_size*board_size+GAP,GAP],2)
+    pygame.draw.line(sc,BLACK,[GAP*board_size+GAP-1,GAP],[GAP*board_size+GAP-1,GAP*board_size+GAP],2)
+    pygame.draw.line(sc,BLACK,[GAP*board_size+GAP-1,GAP*board_size+GAP],[GAP,GAP+board_size*cell_size],2)
+    pygame.draw.line(sc,BLACK,[GAP,GAP+board_size*cell_size],[GAP,GAP],2)
 
 def draw_filled_board():
     for row in range(board_size):
         for col in range(board_size):
             draw_full_cell(col,row)
 def draw_full_cell(row,col):
-    pygame.draw.rect(screen,BLACK,(row*cell_size+GAP,col*cell_size+GAP, cell_size,cell_size))
-    pygame.draw.rect(screen,WHITE,(row*cell_size+1+GAP,col*cell_size+1+GAP,cell_size-2,cell_size-2))  
+    pygame.draw.rect(sc,BLACK,(row*cell_size+GAP,col*cell_size+GAP, cell_size,cell_size))
+    pygame.draw.rect(sc,WHITE,(row*cell_size+1+GAP,col*cell_size+1+GAP,cell_size-2,cell_size-2))  
 def draw_empty_cell(row,col):
     remove_left_cell(row,col)
     remove_right_cell(row,col)
@@ -20,13 +21,13 @@ def draw_empty_cell(row,col):
     remove_bot_cell(row,col)
 
 def remove_right_cell(row,col):
-    pygame.draw.line(screen,WHITE,[row*cell_size+49+GAP,col*cell_size+1+GAP],[row*cell_size+49+GAP,col*cell_size+48+GAP],2)
+    pygame.draw.line(sc,WHITE,[row*cell_size+49+GAP,col*cell_size+1+GAP],[row*cell_size+49+GAP,col*cell_size+48+GAP],2)
 def remove_left_cell(row,col):
-    pygame.draw.line(screen,WHITE,[row*cell_size-1+GAP,col*cell_size+1+GAP],[row*cell_size-1+GAP,col*cell_size+48+GAP],2)    
+    pygame.draw.line(sc,WHITE,[row*cell_size-1+GAP,col*cell_size+1+GAP],[row*cell_size-1+GAP,col*cell_size+48+GAP],2)    
 def remove_top_cell(row,col):
-    pygame.draw.line(screen,WHITE,[row*cell_size+1+GAP,col*cell_size-1+GAP],[row*cell_size+48+GAP,col*cell_size+GAP-1],2)  
+    pygame.draw.line(sc,WHITE,[row*cell_size+1+GAP,col*cell_size-1+GAP],[row*cell_size+48+GAP,col*cell_size+GAP-1],2)  
 def remove_bot_cell(row,col):
-    pygame.draw.line(screen,WHITE,[row*cell_size+1+GAP,col*cell_size+49+GAP],[row*cell_size+48+GAP,col*cell_size+49+GAP],2) 
+    pygame.draw.line(sc,WHITE,[row*cell_size+1+GAP,col*cell_size+49+GAP],[row*cell_size+48+GAP,col*cell_size+49+GAP],2) 
 
 # Алгоритм двоичного дерева
 def bin_tree_NE(arr): 
@@ -38,6 +39,7 @@ def bin_tree_NE(arr):
                 arr[i][j] = 4
             elif j != board_size-1 and i != 0:
                 arr[i][j] = random.randint(3,4)
+            
     return arr
 def bin_tree_NW(arr):
     for i in range(board_size):
@@ -94,29 +96,22 @@ def draw_bin_tree(arg):
         arr = bin_tree_NW(arr)
     elif arg == "SE":
         arr = bin_tree_SE(arr)
-    
+    draw_border()
     for row in range(board_size):
         for col in range(board_size):
             if arr[row][col] == 0:
                 draw_full_cell(col,row)
-    for row in range(board_size):
-        for col in range(board_size):
-            if arr[row][col] == 1:    
+            elif arr[row][col] == 0:    
                 draw_empty_cell(col,row)
-    for row in range(board_size):
-        for col in range(board_size):
-            if arr[row][col] == 2:    
+            elif arr[row][col] == 2:    
                 remove_left_cell(col,row)
-    for row in range(board_size):
-        for col in range(board_size):
-            if arr[row][col] == 3:    
+            elif arr[row][col] == 3:    
                 remove_right_cell(col,row)
-    for row in range(board_size):
-        for col in range(board_size):
-            if arr[row][col] == 4:    
+            elif arr[row][col] == 4: 
                 remove_top_cell(col,row)
-    for row in range(board_size):
-        for col in range(board_size):
-            if arr[row][col] == 5:    
+            elif arr[row][col] == 5:    
                 remove_bot_cell(col,row)
+            clock.tick(300)
+            draw_border()
+            pygame.display.flip()
     
