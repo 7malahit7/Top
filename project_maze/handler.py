@@ -4,36 +4,42 @@ cell_size = 50 * 16 / board_size
 arr = [0]*board_size
 for i in range(board_size):
     arr[i] = [0]*board_size
+#обводка лабиринта
 def draw_border(sc):
     pygame.draw.line(sc, WHITE, [GAP, GAP], [cell_size * board_size + GAP, GAP], 2)
     pygame.draw.line(sc, WHITE, [cell_size * board_size + GAP, GAP], [cell_size * board_size + GAP, cell_size * board_size + GAP], 2)
     pygame.draw.line(sc, WHITE, [cell_size * board_size + GAP, cell_size * board_size + GAP], [GAP, cell_size * board_size + GAP], 2)
     pygame.draw.line(sc, WHITE, [GAP, cell_size * board_size + GAP], [GAP, GAP], 2)
 
-
+#отрисовка поля из заполненных клеток
 def draw_filled_board(sc):
     for row in range(board_size):
         for col in range(board_size):
             draw_full_cell(col,row,sc)
+#полная клетка
 def draw_full_cell(row,col,sc):
     pygame.draw.rect(sc,WHITE,(row*cell_size+GAP,col*cell_size+GAP, cell_size,cell_size))
     pygame.draw.rect(sc,BLACK,(row*cell_size+1+GAP,col*cell_size+1+GAP,cell_size-2,cell_size-2))  
+#пустая клетка
 def draw_empty_cell(row,col,sc):
     remove_left_cell(row,col,sc)
     remove_right_cell(row,col,sc)
     remove_top_cell(row,col,sc)
     remove_bot_cell(row,col,sc)
-
+#удаление правой клетки
 def remove_right_cell(row,col,sc):
-    pygame.draw.line(sc,BLACK,[row*cell_size+cell_size-1+GAP,col*cell_size+1+GAP],[row*cell_size+cell_size-1+GAP,col*cell_size+cell_size-1+GAP],2)
+    pygame.draw.line(sc,BLACK,[row*cell_size+cell_size-1+GAP,col*cell_size+1+GAP],[row*cell_size+cell_size-1+GAP,col*cell_size+cell_size+GAP],2)
+#удаление левой клетки
 def remove_left_cell(row,col,sc):
     pygame.draw.line(sc,BLACK,[row*cell_size-1+GAP,col*cell_size+1+GAP],[row*cell_size-1+GAP,col*cell_size+cell_size-2+GAP],2)    
+#удаление верхней клетки
 def remove_top_cell(row,col,sc):
     pygame.draw.line(sc,BLACK,[row*cell_size+1+GAP,col*cell_size-1+GAP],[row*cell_size+cell_size-2+GAP,col*cell_size+GAP-1],2)  
+#удаление нижней клетки
 def remove_bot_cell(row,col,sc):
     pygame.draw.line(sc,BLACK,[row*cell_size+1+GAP,col*cell_size+cell_size-1+GAP],[row*cell_size+cell_size-2+GAP,col*cell_size+cell_size-1+GAP],2) 
 
-# Алгоритм двоичного дерева
+# Алгоритмы двоичного дерева с разным смещением
 def bin_tree_NE(arr): 
     for i in range(board_size):
         for j in range(board_size):
@@ -66,7 +72,7 @@ def bin_tree_SW(arr):
             elif j != 0 and i != board_size-1:
                 arr[i][j] = random.choice([2,5])
     return arr
-def bin_tree_SE(arr): #3 5
+def bin_tree_SE(arr):
     for i in range(board_size):
         for j in range(board_size):
             if i == board_size-1:
@@ -77,20 +83,14 @@ def bin_tree_SE(arr): #3 5
                 arr[i][j] = random.choice([3,5])
     return arr
         
-
-#отрисовка лабиринта двоичным деревом
 #0 - залитая клетка
 #1 - пустая
 #2 - слева пустая
 #3 - справа пустая
 #4 - сверху пустая
 #5 - снизу пустая
-# NE  4 3
-# NW  4 2
-# SW  2 5 
-# SE  3 5 
-    
 
+#отрисовка лабиринта
 def draw_bin_tree(arg,sc):
     global arr
     arr = [0]*board_size
@@ -122,10 +122,32 @@ def draw_bin_tree(arg,sc):
             clock.tick(10000)
             draw_border(sc)
             pygame.display.flip()
-
+#экран двоичного дерева
 def BT(arg):
     redraw_btn_text = font.render("Regenerate", True, TEXT_COLOR)
     menu_btn_text = font.render("Menu", True, TEXT_COLOR)
+    info_BT_text = [['Самый простой в понимании и реализации алгоритм, Бинарное'],
+    [' дерево или же Sidewinder.'],
+    [''],
+    ['Имеет два побочных эффекта:'],
+    ['  1) Лабиринты обладают сильным диагональным смещением'],
+    ['    и отсутствием тупиков в его направлении.'],
+    ['  2) Два пустых коридора по сторонам лабиринта. Когда'],
+    ['    алгоритм «прокапывается» до конца строки/столбца,'],
+    ['    ему не остается выбора, кроме как продолжить путь'],
+    ['    в одном единственном направлении, создавая'],
+    ['    пустые «границы».'],
+    [' '],
+    ['Сам алгоритм: '],
+    ['  1)  Выбрать начальную клетку;'],
+    ['  2)  Выбрать случайное направление для прокладывания пути.'],
+    ['     Если соседняя клетка в этом направлении выходит за'],
+    ['     границы поля, прокопать клетку в единственно возможном'],
+    ['     направлении;'],
+    ['  3)  Перейти к следующей клетке;'],
+    ['  4)  Повторять 2-3 до тех пор, пока не будут обработаны'],
+    ['     все клетки;']]
+ 
     global board_size, cell_size
     is_working = True
     screen_BT = pygame.display.set_mode((width, height))
@@ -158,7 +180,11 @@ def BT(arg):
     screen_BT.blit(txt_surface, (input_box.x + 145, input_box.y + 30))
     pygame.draw.rect(screen_BT, color, input_box, 2)
     screen_BT.blit(width_txt, (input_box.x + 15, input_box.y + 30))
-
+    for i in range(len(info_BT_text)):
+        t = str(info_BT_text[i])[2:-2:]
+        txt = info_font.render(t,True,TEXT_COLOR)
+        screen_BT.blit(txt,(880,200+i*20))
+    # screen_BT.blit(info_BT_text, (800,200))
     pygame.display.flip()
     draw_filled_board(screen_BT)
     draw_bin_tree(arg, screen_BT)
@@ -201,9 +227,7 @@ def BT(arg):
             screen_BT.blit(width_txt, (input_box.x + 15, input_box.y + 30))
             pygame.draw.rect(screen_BT, color, input_box, 2)
             pygame.display.flip()
-            # print(board_size)
-
-                
+#выбор смщенеия               
 def dirChose():
 
     b1_color = color1
@@ -279,6 +303,7 @@ def dirChose():
             else:
                 b4_color = color2
         pygame.display.flip()
+#экран меню
 def Menu():
     bin_tree_text = font.render("  Binary Tree",True,TEXT_COLOR)
     euler_text = font.render("Euler Algorithm",True,TEXT_COLOR)
