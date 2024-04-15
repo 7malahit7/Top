@@ -1,9 +1,8 @@
 from globals_vars import *
 board_size = 16
 cell_size = 50 * 16 / board_size
-arr = [0]*board_size
-for i in range(board_size):
-    arr[i] = [0]*board_size
+arr_right = []
+arr_bot = []
 #обводка лабиринта
 def draw_border(sc):
     pygame.draw.line(sc, WHITE, [GAP, GAP], [cell_size * board_size + GAP, GAP], 2)
@@ -21,99 +20,121 @@ def draw_full_cell(row,col,sc):
     pygame.draw.rect(sc,WHITE,(row*cell_size+GAP,col*cell_size+GAP, cell_size,cell_size))
     pygame.draw.rect(sc,BLACK,(row*cell_size+1+GAP,col*cell_size+1+GAP,cell_size-2,cell_size-2))  
 #пустая клетка
-def draw_empty_cell(row,col,sc):
-    remove_left_cell(row,col,sc)
-    remove_right_cell(row,col,sc)
-    remove_top_cell(row,col,sc)
-    remove_bot_cell(row,col,sc)
+# def draw_empty_cell(row,col,sc):
+#     remove_left_cell(row,col,sc)
+#     remove_right_cell(row,col,sc)
+#     remove_top_cell(row,col,sc)
+#     remove_bot_cell(row,col,sc)
 #удаление правой клетки
 def remove_right_cell(row,col,sc):
-    pygame.draw.line(sc,BLACK,[row*cell_size+cell_size-1+GAP,col*cell_size+1+GAP],[row*cell_size+cell_size-1+GAP,col*cell_size+cell_size+GAP],2)
+    pygame.draw.line(sc,BLACK,[row*cell_size+cell_size-1+GAP,col*cell_size+1+GAP],[row*cell_size+cell_size-1+GAP,col*cell_size+cell_size-2+GAP],2)
 #удаление левой клетки
-def remove_left_cell(row,col,sc):
-    pygame.draw.line(sc,BLACK,[row*cell_size-1+GAP,col*cell_size+1+GAP],[row*cell_size-1+GAP,col*cell_size+cell_size-2+GAP],2)    
+# def remove_left_cell(row,col,sc):
+#     pygame.draw.line(sc,BLACK,[row*cell_size-1+GAP,col*cell_size+1+GAP],[row*cell_size-1+GAP,col*cell_size+cell_size-2+GAP],2)    
 #удаление верхней клетки
-def remove_top_cell(row,col,sc):
-    pygame.draw.line(sc,BLACK,[row*cell_size+1+GAP,col*cell_size-1+GAP],[row*cell_size+cell_size-2+GAP,col*cell_size+GAP-1],2)  
+# def remove_top_cell(row,col,sc):
+#     pygame.draw.line(sc,BLACK,[row*cell_size+1+GAP,col*cell_size-1+GAP],[row*cell_size+cell_size-2+GAP,col*cell_size+GAP-1],2)  
 #удаление нижней клетки
 def remove_bot_cell(row,col,sc):
     pygame.draw.line(sc,BLACK,[row*cell_size+1+GAP,col*cell_size+cell_size-1+GAP],[row*cell_size+cell_size-2+GAP,col*cell_size+cell_size-1+GAP],2) 
 
 # Алгоритмы двоичного дерева с разным смещением
-def bin_tree_NE(arr): 
+
+def bin_tree_NE(right, bot): 
     for i in range(board_size):
         for j in range(board_size):
             if i == 0:
-                arr[i][j] = 3
-            elif j == board_size-1:
-                arr[i][j] = 4
-            elif j != board_size-1 and i != 0:
-                arr[i][j] = random.randint(3,4)
-            
-    return arr
-def bin_tree_NW(arr):
+                right[i][j] = 0
+            elif j == board_size - 1:
+                bot[i-1][j] = 0
+            else:
+                dir = random.randint(0, 1)
+                if dir:
+                    right[i][j] = 0
+                else:
+                    bot[i-1][j] = 0
+    return right, bot
+
+def bin_tree_NW(right, bot):
     for i in range(board_size):
         for j in range(board_size):
             if i == 0:
-                arr[i][j] = 2
-            elif j == 0:
-                arr[i][j] = 4
-            elif j != 0 and i != 0:
-                arr[i][j] = random.choice([2,4])
- 
-    return arr
-def bin_tree_SW(arr):
+                right[i][j-1] = 0
+            if j == 0:
+                bot[i-1][j] = 0
+            if j != 0 and i != 0:
+                r = random.randint(0, 1)
+                if r:
+                    right[i][j-1] = 0
+                else:
+                    bot[i-1][j] = 0
+    return right, bot
+
+def bin_tree_SW(right, bot):
     for i in range(board_size):
         for j in range(board_size):
-            if i == board_size-1:
-                arr[i][j] = 2
-            elif j == 0:
-                arr[i][j] = 5
-            elif j != 0 and i != board_size-1:
-                arr[i][j] = random.choice([2,5])
-    return arr
-def bin_tree_SE(arr):
+            if i == board_size - 1:
+                right[i][j-1] = 0
+            if j == 0:
+                bot[i][j] = 0
+            if j != 0 and i != board_size - 1:
+                r = random.randint(0, 1)
+                if r:
+                    right[i][j-1] = 0
+                else:
+                    bot[i][j] = 0
+    return right, bot
+
+def bin_tree_SE(right, bot):
     for i in range(board_size):
         for j in range(board_size):
-            if i == board_size-1:
-                arr[i][j] = 3
-            elif j == board_size-1:
-                arr[i][j] = 5
-            elif i!= board_size-1 and j != board_size-1:
-                arr[i][j] = random.choice([3,5])
-    return arr
-        
+            if i == board_size - 1:
+                right[i][j] = 0
+            if j == board_size - 1:
+                bot[i][j] = 0
+            if i != board_size - 1 and j != board_size - 1:
+                r = random.randint(0, 1)
+                if r:
+                    right[i][j] = 0
+                else:
+                    bot[i][j] = 0
+    return right, bot
+
 
 
 #отрисовка лабиринта
 def draw_bin_tree(arg,sc):
-    global arr
-    arr = [0]*board_size
+
+    global arr_right
+    arr_right = [1]*board_size
     for i in range(board_size):
-        arr[i] = [0]*board_size 
+        arr_right[i] = [1]*board_size 
+
+    global arr_bot
+    arr_bot = [1]*board_size
+    for i in range(board_size):
+        arr_bot[i] = [1]*board_size 
+
     if arg == "SW":
-        arr = bin_tree_SW(arr)
+        arr_right,arr_bot = bin_tree_SW(arr_right,arr_bot)
     elif arg == "NE":
-        arr = bin_tree_NE(arr)
+        arr_right,arr_bot = bin_tree_NE(arr_right,arr_bot)
     elif arg == "NW":
-        arr = bin_tree_NW(arr)
+        arr_right,arr_bot = bin_tree_NW(arr_right,arr_bot)
     elif arg == "SE":
-        arr = bin_tree_SE(arr)
+        arr_right,arr_bot = bin_tree_SE(arr_right,arr_bot)
     draw_border(sc)
+    for i in range(board_size):
+        arr_right[i][board_size-1] = 1
+        arr_bot[board_size-1][i] = 1
+
     for row in range(board_size):
-        for col in range(board_size):
-            if arr[row][col] == 0:
-                draw_full_cell(col,row,sc)
-            elif arr[row][col] == 0:    
-                draw_empty_cell(col,row,sc)
-            elif arr[row][col] == 2:    
-                remove_left_cell(col,row,sc)
-            elif arr[row][col] == 3:    
-                remove_right_cell(col,row,sc)
-            elif arr[row][col] == 4: 
-                remove_top_cell(col,row,sc)
-            elif arr[row][col] == 5:    
+        for col in range(board_size):  
+            if arr_bot[row][col] == 0: 
                 remove_bot_cell(col,row,sc)
+            if arr_right[row][col] == 0:    
+                remove_right_cell(col,row,sc)
+
             clock.tick(10000)
             draw_border(sc)
             pygame.display.flip()
@@ -187,6 +208,12 @@ def BT(arg):
     while is_working:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
+                print("bot")
+                for i in range(len(arr_bot)):
+                    print(arr_bot[i])
+                print("\nright")
+                for i in range(len(arr_right)):
+                    print(arr_right[i])
                 is_working = False
                 return
             if event.type == pygame.MOUSEBUTTONDOWN:
@@ -222,6 +249,7 @@ def BT(arg):
             screen_BT.blit(width_txt, (input_box.x + 15, input_box.y + 30))
             pygame.draw.rect(screen_BT, color, input_box, 2)
             pygame.display.flip()
+
 #выбор смщенеия               
 def dirChose():
 
@@ -343,12 +371,12 @@ def Lee_Alg():
     screen_Lee = pygame.display.set_mode((width, height))
     draw_filled_board(screen_Lee)
     
-    global arr
-    arr = bin_tree_NE(arr)  # Генерируем лабиринт с помощью алгоритма двоичного дерева
+    global arr_right
+    arr_right = bin_tree_NE(arr_right)  # Генерируем лабиринт с помощью алгоритма двоичного дерева
     draw_bin_tree("NE",screen_Lee)
     start = (0, 10)  # Задаем начальную точку
     end = (10, 0)  # Задаем конечную точку
-    shortest_path = find_shortest_path(arr, start, end)  # Находим кратчайший путь
+    shortest_path = find_shortest_path(arr_right, start, end)  # Находим кратчайший путь
     draw_shortest_path(shortest_path, screen_Lee)  # Отрисовываем кратчайший путь
     pygame.display.flip()  # Обновляем экран после отрисовки кратчайшего пути
     is_working = True
