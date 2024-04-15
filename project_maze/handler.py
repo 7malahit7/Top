@@ -83,12 +83,7 @@ def bin_tree_SE(arr):
                 arr[i][j] = random.choice([3,5])
     return arr
         
-#0 - залитая клетка
-#1 - пустая
-#2 - слева пустая
-#3 - справа пустая
-#4 - сверху пустая
-#5 - снизу пустая
+
 
 #отрисовка лабиринта
 def draw_bin_tree(arg,sc):
@@ -306,7 +301,7 @@ def dirChose():
 #экран меню
 def Menu():
     bin_tree_text = font.render("  Binary Tree",True,TEXT_COLOR)
-    euler_text = font.render("Euler Algorithm",True,TEXT_COLOR)
+    euler_text = font.render(" Lee Algorithm",True,TEXT_COLOR)
 
     button1_color = color1
     Button1_Y = 150
@@ -339,5 +334,80 @@ def Menu():
                 if mouse[0] >= Button_X and mouse[0] <= Button_X+Button_Size_W and mouse[1]>= Button1_Y and mouse[1]<=Button1_Y+Button_Size_H:
                     is_working = False
                     return dirChose()
+                elif mouse[0] >= Button_X and mouse[0] <= Button_X+Button_Size_W and mouse[1]>= Button2_Y and mouse[1]<=Button2_Y+Button_Size_H:
+                    return Lee_Alg()
+        pygame.display.flip()
+# Импорты и глобальные переменные
+
+def Lee_Alg():
+    screen_Lee = pygame.display.set_mode((width, height))
+    draw_filled_board(screen_Lee)
+    
+    global arr
+    arr = bin_tree_NE(arr)  # Генерируем лабиринт с помощью алгоритма двоичного дерева
+    draw_bin_tree("NE",screen_Lee)
+    start = (0, 10)  # Задаем начальную точку
+    end = (10, 0)  # Задаем конечную точку
+    shortest_path = find_shortest_path(arr, start, end)  # Находим кратчайший путь
+    draw_shortest_path(shortest_path, screen_Lee)  # Отрисовываем кратчайший путь
+    pygame.display.flip()  # Обновляем экран после отрисовки кратчайшего пути
+    is_working = True
+    while is_working:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                is_working = False
+                return
         pygame.display.flip()
 
+
+def find_shortest_path(maze, start, end):
+    queue = [start]
+    visited = set()
+    predecessor = {}
+    while queue:
+        current = queue.pop(0)
+        if current == end:
+            break
+        for neighbor in get_neighbors(current, maze):
+            if neighbor not in visited:
+                queue.append(neighbor)
+                visited.add(neighbor)
+                predecessor[neighbor] = current
+    # Восстанавливаем кратчайший путь
+    shortest_path = [end]
+    while shortest_path[-1] != start:
+        shortest_path.append(predecessor[shortest_path[-1]])
+    shortest_path.reverse()
+    return shortest_path
+
+def get_neighbors(cell, maze):
+    row, col = cell
+    neighbors = []
+    # Проверяем клетку сверху
+    if row > 0 and maze[row - 1][col] != 5:  # Если клетка сверху не пустая
+        neighbors.append((row - 1, col))
+    # Проверяем клетку снизу
+    if row < board_size - 1 and maze[row + 1][col] != 4:  # Если клетка снизу не пустая
+        neighbors.append((row + 1, col))
+    # Проверяем клетку слева
+    if col > 0 and maze[row][col - 1] != 3:  # Если клетка слева не пустая
+        neighbors.append((row, col - 1))
+    # Проверяем клетку справа
+    if col < board_size - 1 and maze[row][col + 1] != 2:  # Если клетка справа не пустая
+        neighbors.append((row, col + 1))
+    return neighbors
+
+#0 - залитая клетка
+#1 - пустая
+#2 - слева пустая
+#3 - справа пустая
+#4 - сверху пустая
+#5 - снизу пустая
+
+def draw_shortest_path(path, screen):
+    for cell in path:
+        row, col = cell
+        # Отрисовка красного квадрата по середине клетки
+        pygame.draw.rect(screen, (255, 0, 0), (col * cell_size + GAP + cell_size // 2 - 1, row * cell_size + GAP + cell_size // 2 - 1, 3, 3))
+        clock.tick(15)
+        pygame.display.flip()  # Обновляем отображение после отрисовки каждого красного квадрата
