@@ -17,4 +17,9 @@ info_font = pygame.font.SysFont('Courier New',20,bold=True)
 font2 = pygame.font.SysFont("Courier New",50,bold=True)
 color1 = (31, 25, 24)
 color2 = (56, 46, 44)
-    
+btn_regenerate_x = 16 * 50 + 70
+btn_regenerate_y = 14 * 50
+btn_menu_x = btn_regenerate_x + Button_Size_W + 170
+btn_menu_y = 50    
+btn_menu_width = Button_Size_W // 2
+menu_btn_text = font.render("Menu", True, TEXT_COLOR)
