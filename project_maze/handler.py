@@ -10,36 +10,22 @@ def draw_border(sc):
     pygame.draw.line(sc, WHITE, [cell_size * board_size + GAP, cell_size * board_size + GAP], [GAP, cell_size * board_size + GAP], 2)
     pygame.draw.line(sc, WHITE, [GAP, cell_size * board_size + GAP], [GAP, GAP], 2)
 
-#отрисовка поля из заполненных клеток
 def draw_filled_board(sc):
     for row in range(board_size):
         for col in range(board_size):
             draw_full_cell(col,row,sc)
-#полная клетка
 def draw_full_cell(row,col,sc):
     pygame.draw.rect(sc,WHITE,(row*cell_size+GAP,col*cell_size+GAP, cell_size,cell_size))
     pygame.draw.rect(sc,BLACK,(row*cell_size+1+GAP,col*cell_size+1+GAP,cell_size-2,cell_size-2))  
-#пустая клетка
-# def draw_empty_cell(row,col,sc):
-#     remove_left_cell(row,col,sc)
-#     remove_right_cell(row,col,sc)
-#     remove_top_cell(row,col,sc)
-#     remove_bot_cell(row,col,sc)
-#удаление правой клетки
 def remove_right_cell(row,col,sc):
     pygame.draw.line(sc,BLACK,[row*cell_size+cell_size-1+GAP,col*cell_size+1+GAP],[row*cell_size+cell_size-1+GAP,col*cell_size+cell_size-2+GAP],2)
-#удаление левой клетки
-# def remove_left_cell(row,col,sc):
-#     pygame.draw.line(sc,BLACK,[row*cell_size-1+GAP,col*cell_size+1+GAP],[row*cell_size-1+GAP,col*cell_size+cell_size-2+GAP],2)    
-#удаление верхней клетки
-# def remove_top_cell(row,col,sc):
-#     pygame.draw.line(sc,BLACK,[row*cell_size+1+GAP,col*cell_size-1+GAP],[row*cell_size+cell_size-2+GAP,col*cell_size+GAP-1],2)  
-#удаление нижней клетки
 def remove_bot_cell(row,col,sc):
     pygame.draw.line(sc,BLACK,[row*cell_size+1+GAP,col*cell_size+cell_size-1+GAP],[row*cell_size+cell_size-2+GAP,col*cell_size+cell_size-1+GAP],2) 
 
 # Алгоритмы двоичного дерева с разным смещением
 
+# Пример генерации лабиринта двоичным деревом
+# С Северо-Восточным смещением
 def bin_tree_NE(right, bot): 
     for i in range(board_size):
         for j in range(board_size):
@@ -115,6 +101,8 @@ def draw_bin_tree(arg,sc):
     for i in range(board_size):
         arr_bot[i] = [1]*board_size 
 
+
+
     if arg == "SW":
         arr_right,arr_bot = bin_tree_SW(arr_right,arr_bot)
     elif arg == "NE":
@@ -127,7 +115,6 @@ def draw_bin_tree(arg,sc):
     for i in range(board_size):
         arr_right[i][board_size-1] = 1
         arr_bot[board_size-1][i] = 1
-
     for row in range(board_size):
         for col in range(board_size):  
             if arr_bot[row][col] == 0: 
@@ -135,15 +122,14 @@ def draw_bin_tree(arg,sc):
             if arr_right[row][col] == 0:    
                 remove_right_cell(col,row,sc)
 
-            clock.tick(10000)
+            clock.tick(1000000)
             draw_border(sc)
             pygame.display.flip()
 #экран двоичного дерева
 def BT(arg):
     redraw_btn_text = font.render("Regenerate", True, TEXT_COLOR)
-    menu_btn_text = font.render("Menu", True, TEXT_COLOR)
-    info_BT_text = [['Самый простой в понимании и реализации алгоритм, Бинарное'],
-    [' дерево или же Sidewinder.'],
+    info_BT_text = [['Самый простой в понимании и реализации алгоритм, Двоичное'],
+    [' дерево.'],
     [''],
     ['Имеет два побочных эффекта:'],
     ['  1) Лабиринты обладают сильным диагональным смещением'],
@@ -169,10 +155,6 @@ def BT(arg):
     screen_BT = pygame.display.set_mode((width, height))
 
     screen_BT.fill(BLACK)
-    btn_regenerate_x = 16 * 50 + 70
-    btn_regenerate_y = 14 * 50
-    btn_menu_x = btn_regenerate_x + Button_Size_W + 170
-    btn_menu_y = 50
 
     # Пересчитываем размер клеток
     if board_size != 0:
@@ -186,7 +168,6 @@ def BT(arg):
     active = False
 
     txt_surface = font.render(text, True, color)
-    btn_menu_width = Button_Size_W // 2
     pygame.draw.rect(screen_BT, color1, (btn_menu_x, btn_menu_y, btn_menu_width, Button_Size_H), width=3)
     screen_BT.blit(menu_btn_text, (btn_menu_x + 45, btn_menu_y + 30))
 
@@ -200,7 +181,6 @@ def BT(arg):
         t = str(info_BT_text[i])[2:-2:]
         txt = info_font.render(t,True,TEXT_COLOR)
         screen_BT.blit(txt,(880,200+i*20))
-    # screen_BT.blit(info_BT_text, (800,200))
     pygame.display.flip()
     draw_filled_board(screen_BT)
     draw_bin_tree(arg, screen_BT)
@@ -208,10 +188,10 @@ def BT(arg):
     while is_working:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                print("bot")
+                print("Нижние стенки")
                 for i in range(len(arr_bot)):
                     print(arr_bot[i])
-                print("\nright")
+                print("\nПравые стенки")
                 for i in range(len(arr_right)):
                     print(arr_right[i])
                 is_working = False
@@ -368,69 +348,151 @@ def Menu():
 # Импорты и глобальные переменные
 
 def Lee_Alg():
+    redraw_btn_text = font.render(" Restart", True, TEXT_COLOR)
+    info_Lee_Alg = [['Алгоритм Ли, также известный как волновой алгоритм,'],
+ ['для поиска кратчайшего пути в лабиринте.'],
+['Пользователю предоставляется возможность выбрать'],
+ ['начальную и конечную точки на экране.'],
+['Алгоритм работает на основе принципа распространения волны:'],
+ ['начиная с начальной точки, он распространяет "волну" по '],
+ ['соседним клеткам до тех пор, пока не достигнет конечной'],
+['точки.'],
+[''],
+['Основные шаги алгоритма:'],
+['1) Установка начальной клетки и конечной клетки.'],
+['2) Распространение "волны" от начальной клетки до конечной'],
+['клетки, помечая каждую посещённую клетку числом - расстоянием'],
+['от начальной клетки.'],
+['3)Построение кратчайшего пути, начиная от конечной клетки'],
+[' и двигаясь к начальной, по числам, уменьшая их.']]
+
     screen_Lee = pygame.display.set_mode((width, height))
     draw_filled_board(screen_Lee)
-    
-    global arr_right
-    arr_right = bin_tree_NE(arr_right)  # Генерируем лабиринт с помощью алгоритма двоичного дерева
-    draw_bin_tree("NE",screen_Lee)
-    start = (0, 10)  # Задаем начальную точку
-    end = (10, 0)  # Задаем конечную точку
-    shortest_path = find_shortest_path(arr_right, start, end)  # Находим кратчайший путь
-    draw_shortest_path(shortest_path, screen_Lee)  # Отрисовываем кратчайший путь
-    pygame.display.flip()  # Обновляем экран после отрисовки кратчайшего пути
+    for i in range(len(info_Lee_Alg)):
+        t = str(info_Lee_Alg[i])[2:-2:]
+        txt = info_font.render(t,True,TEXT_COLOR)
+        screen_Lee.blit(txt,(880,300+i*20))
+    screen_Lee.blit(redraw_btn_text, (btn_regenerate_x + 70, btn_regenerate_y + 30))
+    global arr_right, arr_bot
+    arr_right = [1]*board_size
+    for i in range(board_size):
+        arr_right[i] = [1]*board_size 
+    arr_bot = [1]*board_size
+    for i in range(board_size):
+        arr_bot[i] = [1]*board_size 
+    arr_right,arr_bot = bin_tree_NE(arr_right,arr_bot)  
+    pygame.draw.rect(screen_Lee, color1, (btn_regenerate_x, btn_regenerate_y, Button_Size_W, Button_Size_H), width=3)
+    for i in range(board_size):
+        arr_right[i][board_size-1] = 1
+        arr_bot[board_size-1][i] = 1
+    screen_Lee.blit(menu_btn_text, (btn_menu_x + 45, btn_menu_y + 30))
+    draw_bin_tree("NW",screen_Lee)
+    pygame.draw.rect(screen_Lee, color1, (btn_menu_x, btn_menu_y, btn_menu_width, Button_Size_H), width=3)
+    start = set_pos(screen_Lee,True) 
+    end = set_pos(screen_Lee,False,start)  
+    shortest_path = find_shortest_path(arr_right,arr_bot, start, end)  
+    draw_shortest_path(shortest_path, screen_Lee)  
+    pygame.display.flip()  
     is_working = True
     while is_working:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 is_working = False
                 return
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                mouse = pygame.mouse.get_pos()
+                if mouse[0] >= btn_menu_x and mouse[0] <= btn_menu_x + Button_Size_W and \
+                        mouse[1] >= btn_menu_y and mouse[1] <= btn_menu_y + Button_Size_H:
+                    return Menu()
+                if mouse[0] >= btn_regenerate_x and mouse[0] <= btn_regenerate_x + Button_Size_W and \
+                        mouse[1] >= btn_regenerate_y and mouse[1] <= btn_regenerate_y + Button_Size_H:
+                    is_working = False
+                    return Lee_Alg()
         pygame.display.flip()
+def set_pos(sc,start_or_end,start=(0,0)):
+    is_end = False
+    if start_or_end:
+        color = (255,0,0)
+    else:
+        is_end = True
+        color = (0,255,0)
+    pos = {"x":0,"y":0}
+    is_working = True
+    size = cell_size-3
+    pygame.draw.rect(sc,color,(GAP+cell_size*pos["x"]+2,GAP+cell_size*pos["y"]+2,size,size))
+    
+    while is_working:
+        for event in pygame.event.get():
+            if is_end:
+                pygame.draw.rect(sc,(255,0,0),(GAP+cell_size*start[1]+2,GAP+cell_size*start[0]+2,size,size))
+            if event.type == pygame.QUIT:
+                is_working = False
+                return
+            if event.type == pygame.KEYDOWN:
+                if (event.key == pygame.K_d or event.key == pygame.K_RIGHT) and pos["x"]!=board_size-1:
+                    pygame.draw.rect(sc,BLACK,(GAP+cell_size*pos["x"]+2,GAP+cell_size*pos["y"]+2,size,size))
+                    pos["x"]+=1
+                if (event.key == pygame.K_a or event.key == pygame.K_LEFT) and pos["x"]!=0:
+                    pygame.draw.rect(sc,BLACK,(GAP+cell_size*pos["x"]+2,GAP+cell_size*pos["y"]+2,size,size))
+                    pos["x"]-=1     
+                if (event.key == pygame.K_s or event.key == pygame.K_DOWN) and pos["y"]!=board_size-1:
+                    pygame.draw.rect(sc,BLACK,(GAP+cell_size*pos["x"]+2,GAP+cell_size*pos["y"]+2,size,size))
+                    pos["y"]+=1
+                if (event.key == pygame.K_w or event.key == pygame.K_UP) and pos["y"]!=0:
+                    pygame.draw.rect(sc,BLACK,(GAP+cell_size*pos["x"]+2,GAP+cell_size*pos["y"]+2,size,size))
+                    pos["y"]-=1   
+                if event.key == pygame.K_RETURN or event.key == pygame.K_SPACE:
+                    is_working = False
+                    return (pos["y"],pos["x"])
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                mouse = pygame.mouse.get_pos()
+                if mouse[0] >= btn_menu_x and mouse[0] <= btn_menu_x + Button_Size_W and \
+                        mouse[1] >= btn_menu_y and mouse[1] <= btn_menu_y + Button_Size_H:
+                    return Menu()
+                if mouse[0] >= btn_regenerate_x and mouse[0] <= btn_regenerate_x + Button_Size_W and \
+                        mouse[1] >= btn_regenerate_y and mouse[1] <= btn_regenerate_y + Button_Size_H:
+                    is_working = False
+                    return Lee_Alg()
+            pygame.draw.rect(sc,color,(GAP+cell_size*pos["x"]+2,GAP+cell_size*pos["y"]+2,size,size))
+        pygame.display.flip()   
+    return (pos["y"],pos["x"])
 
-
-def find_shortest_path(maze, start, end):
+def find_shortest_path(maze_right,maze_bot, start, end):
     queue = [start]
-    visited = set()
-    predecessor = {}
+    visited = set() # словарь из неповторяющихся элементов 
+    prev = {}
     while queue:
         current = queue.pop(0)
         if current == end:
             break
-        for neighbor in get_neighbors(current, maze):
+        for neighbor in get_neighbors(current, maze_right,maze_bot):
             if neighbor not in visited:
                 queue.append(neighbor)
                 visited.add(neighbor)
-                predecessor[neighbor] = current
+                prev[neighbor] = current
     # Восстанавливаем кратчайший путь
     shortest_path = [end]
     while shortest_path[-1] != start:
-        shortest_path.append(predecessor[shortest_path[-1]])
+        shortest_path.append(prev[shortest_path[-1]])
     shortest_path.reverse()
     return shortest_path
 
-def get_neighbors(cell, maze):
+def get_neighbors(cell, maze_right,maze_bot):
     row, col = cell
     neighbors = []
     # Проверяем клетку сверху
-    if row > 0 and maze[row - 1][col] != 5:  # Если клетка сверху не пустая
+    if row > 0 and maze_bot[row - 1][col] != 1:
         neighbors.append((row - 1, col))
     # Проверяем клетку снизу
-    if row < board_size - 1 and maze[row + 1][col] != 4:  # Если клетка снизу не пустая
+    if row < board_size - 1 and maze_bot[row][col] != 1:  
         neighbors.append((row + 1, col))
     # Проверяем клетку слева
-    if col > 0 and maze[row][col - 1] != 3:  # Если клетка слева не пустая
+    if col > 0 and maze_right[row][col - 1] != 1:  
         neighbors.append((row, col - 1))
     # Проверяем клетку справа
-    if col < board_size - 1 and maze[row][col + 1] != 2:  # Если клетка справа не пустая
+    if col < board_size - 1 and maze_right[row][col] != 1: 
         neighbors.append((row, col + 1))
     return neighbors
-
-#0 - залитая клетка
-#1 - пустая
-#2 - слева пустая
-#3 - справа пустая
-#4 - сверху пустая
-#5 - снизу пустая
 
 def draw_shortest_path(path, screen):
     for cell in path:
@@ -438,4 +500,4 @@ def draw_shortest_path(path, screen):
         # Отрисовка красного квадрата по середине клетки
         pygame.draw.rect(screen, (255, 0, 0), (col * cell_size + GAP + cell_size // 2 - 1, row * cell_size + GAP + cell_size // 2 - 1, 3, 3))
         clock.tick(15)
-        pygame.display.flip()  # Обновляем отображение после отрисовки каждого красного квадрата
+        pygame.display.flip()
