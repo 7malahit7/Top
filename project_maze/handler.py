@@ -309,7 +309,7 @@ def dirChose():
 #экран меню
 def Menu():
     bin_tree_text = font.render("  Binary Tree",True,TEXT_COLOR)
-    euler_text = font.render(" Lee Algorithm",True,TEXT_COLOR)
+    euler_text = font.render(" BFS Algorithm",True,TEXT_COLOR)
 
     button1_color = color1
     Button1_Y = 150
@@ -343,36 +343,41 @@ def Menu():
                     is_working = False
                     return dirChose()
                 elif mouse[0] >= Button_X and mouse[0] <= Button_X+Button_Size_W and mouse[1]>= Button2_Y and mouse[1]<=Button2_Y+Button_Size_H:
-                    return Lee_Alg()
+                    return BFS_Alg()
         pygame.display.flip()
 # Импорты и глобальные переменные
 
-def Lee_Alg():
+def BFS_Alg():
     redraw_btn_text = font.render(" Restart", True, TEXT_COLOR)
-    info_Lee_Alg = [['Алгоритм Ли, также известный как волновой алгоритм,'],
- ['для поиска кратчайшего пути в лабиринте.'],
+    info_BFS_Alg = [['Алгоритм поиска в ширину (BFS) предназначен'],
+ ['кратчайшего пути от начальной вершины до всех остальных'],
+ ['для нахождения вершин в графе или сетке'],
 ['Пользователю предоставляется возможность выбрать'],
  ['начальную и конечную точки на экране.'],
-['Алгоритм работает на основе принципа распространения волны:'],
- ['начиная с начальной точки, он распространяет "волну" по '],
- ['соседним клеткам до тех пор, пока не достигнет конечной'],
-['точки.'],
-[''],
 ['Основные шаги алгоритма:'],
 ['1) Установка начальной клетки и конечной клетки.'],
-['2) Распространение "волны" от начальной клетки до конечной'],
-['клетки, помечая каждую посещённую клетку числом - расстоянием'],
-['от начальной клетки.'],
-['3)Построение кратчайшего пути, начиная от конечной клетки'],
-[' и двигаясь к начальной, по числам, уменьшая их.']]
+['2) Инициализация: Начинаем с добавления начальной вершины в'],
+['очередь и помечаем её как посещённую.'],
+['Поиск в ширину: Пока очередь не пуста, извлекаем вершину из'],
+['очереди. Для каждой соседней вершины, которая ещё не была '],
+['посещена, добавляем её в очередь и помечаем как посещённую.'],
+['3)Отслеживание предшественников и кратчайшего пути: Во время'],
+['поиска запоминаем предыдущую вершину для каждой вершины. Это'],
+['позволяет восстановить кратчайший путь после нахождения'],
+['целевой вершины.'],
+['4)Восстановление кратчайшего пути: Используя информацию'],
+['о предшественниках, можно восстановить кратчайший путь'],
+['от начальной вершины до целевой вершины.']]
 
-    screen_Lee = pygame.display.set_mode((width, height))
-    draw_filled_board(screen_Lee)
-    for i in range(len(info_Lee_Alg)):
-        t = str(info_Lee_Alg[i])[2:-2:]
+
+
+    screen_BFS = pygame.display.set_mode((width, height))
+    draw_filled_board(screen_BFS)
+    for i in range(len(info_BFS_Alg)):
+        t = str(info_BFS_Alg[i])[2:-2:]
         txt = info_font.render(t,True,TEXT_COLOR)
-        screen_Lee.blit(txt,(880,300+i*20))
-    screen_Lee.blit(redraw_btn_text, (btn_regenerate_x + 70, btn_regenerate_y + 30))
+        screen_BFS.blit(txt,(880,300+i*20))
+    screen_BFS.blit(redraw_btn_text, (btn_regenerate_x + 70, btn_regenerate_y + 30))
     global arr_right, arr_bot
     arr_right = [1]*board_size
     for i in range(board_size):
@@ -381,17 +386,17 @@ def Lee_Alg():
     for i in range(board_size):
         arr_bot[i] = [1]*board_size 
     arr_right,arr_bot = bin_tree_NE(arr_right,arr_bot)  
-    pygame.draw.rect(screen_Lee, color1, (btn_regenerate_x, btn_regenerate_y, Button_Size_W, Button_Size_H), width=3)
+    pygame.draw.rect(screen_BFS, color1, (btn_regenerate_x, btn_regenerate_y, Button_Size_W, Button_Size_H), width=3)
     for i in range(board_size):
         arr_right[i][board_size-1] = 1
         arr_bot[board_size-1][i] = 1
-    screen_Lee.blit(menu_btn_text, (btn_menu_x + 45, btn_menu_y + 30))
-    draw_bin_tree("NW",screen_Lee)
-    pygame.draw.rect(screen_Lee, color1, (btn_menu_x, btn_menu_y, btn_menu_width, Button_Size_H), width=3)
-    start = set_pos(screen_Lee,True) 
-    end = set_pos(screen_Lee,False,start)  
+    screen_BFS.blit(menu_btn_text, (btn_menu_x + 45, btn_menu_y + 30))
+    draw_bin_tree("NW",screen_BFS)
+    pygame.draw.rect(screen_BFS, color1, (btn_menu_x, btn_menu_y, btn_menu_width, Button_Size_H), width=3)
+    start = set_pos(screen_BFS,True) 
+    end = set_pos(screen_BFS,False,start)  
     shortest_path = find_shortest_path(arr_right,arr_bot, start, end)  
-    draw_shortest_path(shortest_path, screen_Lee)  
+    draw_shortest_path(shortest_path, screen_BFS)  
     pygame.display.flip()  
     is_working = True
     while is_working:
@@ -407,7 +412,7 @@ def Lee_Alg():
                 if mouse[0] >= btn_regenerate_x and mouse[0] <= btn_regenerate_x + Button_Size_W and \
                         mouse[1] >= btn_regenerate_y and mouse[1] <= btn_regenerate_y + Button_Size_H:
                     is_working = False
-                    return Lee_Alg()
+                    return BFS_Alg()
         pygame.display.flip()
 def set_pos(sc,start_or_end,start=(0,0)):
     is_end = False
@@ -452,7 +457,7 @@ def set_pos(sc,start_or_end,start=(0,0)):
                 if mouse[0] >= btn_regenerate_x and mouse[0] <= btn_regenerate_x + Button_Size_W and \
                         mouse[1] >= btn_regenerate_y and mouse[1] <= btn_regenerate_y + Button_Size_H:
                     is_working = False
-                    return Lee_Alg()
+                    return BFS_Alg()
             pygame.draw.rect(sc,color,(GAP+cell_size*pos["x"]+2,GAP+cell_size*pos["y"]+2,size,size))
         pygame.display.flip()   
     return (pos["y"],pos["x"])
