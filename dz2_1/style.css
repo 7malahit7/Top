@@ -1,0 +1,28 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+ol{
+    display: inline-block;
+    background-color: #f08f8f;
+    padding: 20px 0px 20px 0px;
+    margin-left: 50px;
+    margin-top: 50px;
+    
+}
+li{
+    background-color: #944b4b;
+    padding: 5px 200px 5px 15px;
+    margin: 0px 20px 10px 30px;
+    color:white;
+    list-style: decimal inside;
+
+}
+
+span{
+    background-color: #4b0505;
+    padding: 5px;
+}
