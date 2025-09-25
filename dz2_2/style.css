@@ -1,0 +1,49 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+ul {
+    width: 750px;
+}
+body {
+    padding: 100px;
+}
+
+h1 {
+    margin-bottom: 20px;
+}
+li {
+    list-style-type:none;
+    font-size: 20px;
+    padding: 5px 10px;
+}
+img {
+    width: 20px;
+    margin-right: 10px;
+}
+
+span {
+    color:red;  
+    margin-left: 10px;
+}
+
+li:nth-child(even) {
+    background-color: #28adc5;
+}
+li:nth-child(odd) {
+    background-color: #61b6c5;
+}
+li:nth-child(2) {
+    background-color: #d8d3d3;
+}
+li:nth-child(5) {
+    background-color: #d8d3d3;
+}
+li:nth-child(11) {
+    background-color: #d8d3d3;
+}
+/* li :nth-child(){
+ background-color: #dbcdcd;   
+} */
